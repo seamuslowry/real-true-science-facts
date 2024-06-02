@@ -1,30 +1,16 @@
-import { readdir, readFile } from "fs/promises";
-import matter from "gray-matter";
+import { readFile } from "fs/promises";
+import {parse} from 'csv-parse'
 
 interface Fact {
-  title: string;
-  date: string;
-  slug: string;
   content: string;
+  slug: string;
 }
 
 async function getFacts() {
-  const entries = await readdir("./public/", { withFileTypes: true });
+  const csv = await readFile('./public/facts.csv', 'utf8')
 
-  const dirs = entries
-    .filter(entry => entry.isDirectory())
-    .map(entry => entry.name);
-  const fileContents = await Promise.all(
-    dirs.map((dir) => readFile("./public/" + dir + "/index.md", "utf8")),
-  );
-  const facts = dirs.map((slug, i) => {
-    const fileContent = fileContents[i];
-    const { data, content } = matter(fileContent);
-    return { slug, ...data, content } as Fact;
-  });
-  facts.sort((a, b) => {
-    return Date.parse(a.date) < Date.parse(b.date) ? 1 : -1;
-  });
+  const facts: Fact[] = await parse(csv, {columns: true, skip_empty_lines: true}).toArray();
+
   return facts;
 }
 
@@ -39,7 +25,5 @@ export default async function Home() {
 }
 
 async function FactCard({fact}:{fact: Fact}) {
-  // TODO: render markdown
-  // https://nextjs.org/docs/app/building-your-application/configuring/mdx
   return <div>{fact.content}</div>
 }
