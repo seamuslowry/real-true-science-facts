@@ -1,7 +1,8 @@
 import { readFile } from "fs/promises";
 import {parse} from 'csv-parse'
+import { FactLoader } from "./fact";
 
-interface Fact {
+export interface Fact {
   content: string;
   slug: string;
 }
@@ -18,12 +19,8 @@ export default async function Home() {
   const facts = await getFacts();
 
   return (
-    <main>
-      {facts.map(fact => <FactCard fact={fact} key={fact.slug} />)}
+    <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <FactLoader facts={facts}/>
     </main>
   );
-}
-
-async function FactCard({fact}:{fact: Fact}) {
-  return <div>{fact.content}</div>
 }
