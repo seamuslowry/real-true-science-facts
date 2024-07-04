@@ -1,6 +1,6 @@
-import { readFile } from "fs/promises";
-import {parse} from 'csv-parse'
-import { FactLoader } from "./fact";
+import { readFile } from 'fs/promises';
+import { parse } from 'csv-parse';
+import { FactLoader } from './fact';
 
 export interface Fact {
   content: string;
@@ -8,9 +8,12 @@ export interface Fact {
 }
 
 async function getFacts() {
-  const csv = await readFile('./public/facts.csv', 'utf8')
+  const csv = await readFile('./public/facts.csv', 'utf8');
 
-  const facts: Fact[] = await parse(csv, {columns: true, skip_empty_lines: true}).toArray();
+  const facts: Fact[] = await parse(csv, {
+    columns: true,
+    skip_empty_lines: true
+  }).toArray();
 
   return facts;
 }
@@ -20,7 +23,7 @@ export default async function Home() {
 
   return (
     <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <FactLoader facts={facts}/>
+      <FactLoader facts={facts} />
     </main>
   );
 }
