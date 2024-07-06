@@ -39,6 +39,11 @@ export function FactLoader({ facts }: { facts: Fact[] }) {
     }
   }, [facts.length, showAmount]);
 
+
+
+
+  
+
   const visibleFacts = facts.slice(0, showAmount);
 
   return (
