@@ -4,6 +4,6 @@ on:
 
 jobs:
   lint:
-    uses: seamuslowry/workflows/.github/workflows/lint_npm.yml@feat/npm_lint
+    uses: seamuslowry/workflows/.github/workflows/lint_npm.yml@main
     with:
       node-version: '20.15.0'
