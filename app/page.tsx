@@ -22,7 +22,7 @@ export default async function Home() {
   const facts = await getFacts();
 
   return (
-    <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <main className="grid grid-cols-1 sm:grid-cols-2 gap-x-24 gap-y-12 mx-auto my-10 w-3/4">
       <FactLoader facts={facts} />
     </main>
   );

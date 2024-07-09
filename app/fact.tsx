@@ -16,9 +16,9 @@ export function FactCard({ fact }: { fact: Fact }) {
 
   return (
     <div
-      className={`transition-opacity fade-in duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
+      className={`bg-slate-800 shadow-md shadow-slate-500 rounded transition fade-in duration-500 hover:scale-105 hover:bg-slate-900 ${visible ? 'opacity-100' : 'opacity-0'}`}
     >
-      {fact.content}
+      <p className="p-8 text-4xl">{fact.content}</p>
     </div>
   );
 }
