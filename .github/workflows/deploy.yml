@@ -26,7 +26,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for GitHub integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations ######
-          api_location: "." # Api source code path relative to repository root - optional
+          app_location: "." # App source code path relative to repository root - optional
           output_location: "out" # Built app content directory, relative to app_location - optional
           ###### End of Repository/Build Configurations ######
 
