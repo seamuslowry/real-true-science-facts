@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~>3.0"
     }
+
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
   }
 
   # the storage container for this backend is managed by this state
@@ -18,3 +23,5 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+provider "github" {}
