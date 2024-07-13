@@ -3,6 +3,15 @@ import { useEffect, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
 
+function shuffleFacts(facts: Fact[]) {
+  const newArrray = [...facts];
+  for (let i = newArrray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArrray[i], newArrray[j]] = [newArrray[j], newArrray[i]];
+  }
+  return newArrray;
+}
+
 export function FactCard({ fact }: { fact: Fact }) {
   const [visible, setVisible] = useState(false);
 
@@ -26,20 +35,26 @@ export function FactCard({ fact }: { fact: Fact }) {
 export function FactLoader({ facts }: { facts: Fact[] }) {
   const [showAmount, setShowAmount] = useState(1);
 
+  const [shuffledFacts, setShuffledFacts] = useState<Fact[]>([]);
+
   useEffect(() => {
-    if (showAmount < facts.length) {
+    setShuffledFacts(shuffleFacts(facts));
+  }, [facts]);
+
+  useEffect(() => {
+    if (showAmount < shuffledFacts.length) {
       const timeout = setTimeout(
         () => {
           setShowAmount(c => c + 1);
         },
-        Math.max((100 * (facts.length - showAmount)) / 100, 20)
+        Math.max((100 * (shuffledFacts.length - showAmount)) / 100, 20)
       );
 
       return () => clearTimeout(timeout);
     }
-  }, [facts.length, showAmount]);
+  }, [shuffledFacts.length, showAmount]);
 
-  const visibleFacts = facts.slice(0, showAmount);
+  const visibleFacts = shuffledFacts.slice(0, showAmount);
 
   return (
     <>
