@@ -9,6 +9,11 @@ terraform {
       source  = "integrations/github"
       version = "~> 6.0"
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.0"
+    }
   }
 
   # the storage container for this backend is managed by this state
@@ -25,3 +30,7 @@ provider "azurerm" {
 }
 
 provider "github" {}
+
+provider "cloudflare" {
+  api_token = local.cloudflare_token
+}
