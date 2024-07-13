@@ -24,7 +24,7 @@ async function getFacts() {
     skip_empty_lines: true
   }).toArray();
 
-  return facts;
+  return shuffleFacts(facts);
 }
 
 export default async function Home() {
@@ -32,7 +32,7 @@ export default async function Home() {
 
   return (
     <main className="grid grid-cols-1 sm:grid-cols-2 gap-x-24 gap-y-12 mx-auto my-10 w-3/4">
-      <FactLoader facts={shuffleFacts(facts)} />
+      <FactLoader facts={facts} />
     </main>
   );
 }
