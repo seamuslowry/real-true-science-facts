@@ -23,7 +23,7 @@ export default async function Home() {
 
   return (
     <main className="h-screen w-screen grid place-items-center overflow-hidden">
-      <div className="h-5/6 w-11/12 xl:w-3/4">
+      <div className="h-5/6 w-full sm:w-11/12 xl:w-3/4">
         <FactLoader facts={facts} />
       </div>
     </main>
