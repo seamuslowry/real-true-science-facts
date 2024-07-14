@@ -74,7 +74,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const [index, setIndex] = useState(0);
 
   const virtualPadding = useMemo(
-    () => Math.floor(shuffledFacts.length / 2),
+    () => Math.floor(shuffledFacts.length / 2) - 1,
     [shuffledFacts]
   );
 
@@ -109,7 +109,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
           return (
             <p
               key={fact.slug}
-              className={`row-start-1 col-start-1 p-8 text-9xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
+              className={`row-start-1 col-start-1 p-8 w-full text-4xl sm:text-5xl lg:text-7xl 2xl:text-8xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
             >
               {fact.content}
             </p>
