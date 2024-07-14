@@ -31,3 +31,12 @@ resource "cloudflare_record" "cname_record" {
   ttl     = 1
   proxied = true
 }
+
+resource "cloudflare_page_rule" "bypass_cache" {
+  zone_id = local.cloudflare_zone_id
+  target  = "realtruesciencefacts.com/*"
+
+  actions {
+    cache_level = "bypass"
+  }
+}
