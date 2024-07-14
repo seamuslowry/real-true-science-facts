@@ -52,7 +52,7 @@ const ArrowButton = ({
 }) => (
   <button
     onClick={onClick}
-    className="p-4 self-center flex items-center justify-center transition duration-500 hover:bg-slate-700 rounded-full"
+    className="p-1 sm:p-2 md:p-4 self-center flex items-center justify-center transition duration-500 hover:bg-slate-700 rounded-full"
   >
     {children}
   </button>
@@ -117,7 +117,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   if (!shuffledFacts.length) return null;
 
   return (
-    <div className="grid grid-cols-slider gap-x-12 h-full">
+    <div className="grid grid-cols-slider gap-x-4 md:gap-x-12 h-full">
       <ArrowButton onClick={() => setIndex(c => c - 1)}>
         <ArrowLeft />
       </ArrowButton>
@@ -130,7 +130,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
           return (
             <p
               key={fact.slug}
-              className={`row-start-1 col-start-1 p-8 w-full text-4xl sm:text-5xl lg:text-7xl 2xl:text-8xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
+              className={`row-start-1 col-start-1 p-8 w-full text-2xl sm:text-5xl lg:text-7xl 2xl:text-8xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
             >
               {fact.content}
             </p>
