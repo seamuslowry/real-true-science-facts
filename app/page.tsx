@@ -22,7 +22,7 @@ export default async function Home() {
   const facts = await getFacts();
 
   return (
-    <main className="h-screen w-screen grid place-items-center ">
+    <main className="h-screen w-screen grid place-items-center overflow-hidden">
       <div className="h-5/6 w-3/4">
         <FactLoader facts={facts} />
       </div>

@@ -42,26 +42,6 @@ const ArrowRight = () => (
   </svg>
 );
 
-const FactCard = ({ fact }: { fact: Fact }) => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setVisible(true);
-    }, 50);
-
-    return () => clearTimeout(timeout);
-  }, [visible]);
-
-  return (
-    <div
-      className={`h-full w-full grid place-items-center bg-slate-800 shadow-md shadow-slate-500 rounded transition fade-in duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
-    >
-      <p className="p-8 text-9xl text-center">{fact.content}</p>
-    </div>
-  );
-};
-
 const ArrowButton = ({
   children,
   onClick
@@ -82,12 +62,11 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    setShuffledFacts(shuffleFacts(facts));
+    const shuffledFacts = shuffleFacts(facts);
+    setShuffledFacts(shuffledFacts);
   }, [facts]);
 
   if (!shuffledFacts.length) return null;
-
-  const fact = shuffledFacts[index];
 
   return (
     <div className="grid grid-cols-slider gap-x-12 h-full">
@@ -98,7 +77,22 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
       >
         <ArrowLeft />
       </ArrowButton>
-      <FactCard fact={fact} key={fact.slug} />
+      <div
+        className={`h-full w-full bg-slate-800 shadow-md shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
+      >
+        {shuffledFacts.map((fact, factIndex) => {
+          const left = factIndex < index;
+          const right = index < factIndex;
+          return (
+            <p
+              key={fact.slug}
+              className={`row-start-1 col-start-1 p-8 text-9xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
+            >
+              {fact.content}
+            </p>
+          );
+        })}
+      </div>
       <ArrowButton
         onClick={() => setIndex(c => (c + 1) % shuffledFacts.length)}
       >
