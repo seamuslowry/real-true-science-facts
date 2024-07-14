@@ -7,7 +7,7 @@ export interface Fact {
   slug: string;
 }
 
-async function getFacts() {
+const getFacts = async () => {
   const csv = await readFile('./public/facts.csv', 'utf8');
 
   const facts: Fact[] = await parse(csv, {
@@ -16,14 +16,16 @@ async function getFacts() {
   }).toArray();
 
   return facts;
-}
+};
 
 export default async function Home() {
   const facts = await getFacts();
 
   return (
-    <main className="mx-auto my-10 w-3/4">
-      <FactLoader facts={facts} />
+    <main className="h-screen w-screen grid place-items-center ">
+      <div className="h-5/6 w-3/4">
+        <FactLoader facts={facts} />
+      </div>
     </main>
   );
 }
