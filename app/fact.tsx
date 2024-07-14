@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
+import range from 'lodash.range';
 
 const shuffleFacts = (facts: Fact[]) => {
   const newArray = [...facts];
@@ -57,32 +58,54 @@ const ArrowButton = ({
   </button>
 );
 
+function virtualAccess(arr: Fact[], index: number) {
+  const length = arr.length;
+  // Adjust the index to fit within the bounds of the array length
+  index = ((index % length) + length) % length;
+  return arr[index];
+}
+
+const virtualSlice = (arr: Fact[], start: number, end: number) => {
+  return range(start, end).map(n => virtualAccess(arr, n));
+};
+
 export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const [shuffledFacts, setShuffledFacts] = useState<Fact[]>([]);
   const [index, setIndex] = useState(0);
+
+  const virtualPadding = useMemo(
+    () => Math.floor(shuffledFacts.length / 2),
+    [shuffledFacts]
+  );
 
   useEffect(() => {
     const shuffledFacts = shuffleFacts(facts);
     setShuffledFacts(shuffledFacts);
   }, [facts]);
 
+  const virtualizedFacts = useMemo(
+    () =>
+      virtualSlice(
+        shuffledFacts,
+        index - virtualPadding,
+        index + virtualPadding
+      ),
+    [shuffledFacts, index, virtualPadding]
+  );
+
   if (!shuffledFacts.length) return null;
 
   return (
     <div className="grid grid-cols-slider gap-x-12 h-full">
-      <ArrowButton
-        onClick={() =>
-          setIndex(c => (c - 1 + shuffledFacts.length) % shuffledFacts.length)
-        }
-      >
+      <ArrowButton onClick={() => setIndex(c => c - 1)}>
         <ArrowLeft />
       </ArrowButton>
       <div
         className={`h-full w-full bg-slate-800 shadow-md shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
       >
-        {shuffledFacts.map((fact, factIndex) => {
-          const left = factIndex < index;
-          const right = index < factIndex;
+        {virtualizedFacts.map((fact, factIndex) => {
+          const left = factIndex < virtualPadding;
+          const right = virtualPadding < factIndex;
           return (
             <p
               key={fact.slug}
@@ -93,9 +116,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
           );
         })}
       </div>
-      <ArrowButton
-        onClick={() => setIndex(c => (c + 1) % shuffledFacts.length)}
-      >
+      <ArrowButton onClick={() => setIndex(c => c + 1)}>
         <ArrowRight />
       </ArrowButton>
     </div>
