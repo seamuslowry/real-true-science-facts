@@ -93,6 +93,27 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     [shuffledFacts, index, virtualPadding]
   );
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case 'ArrowLeft':
+          setIndex(c => c - 1);
+          break;
+        case 'ArrowRight':
+          setIndex(c => c + 1);
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   if (!shuffledFacts.length) return null;
 
   return (
