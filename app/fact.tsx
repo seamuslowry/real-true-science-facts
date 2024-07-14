@@ -3,6 +3,15 @@ import { useEffect, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
 
+function shuffleFacts(facts: Fact[]) {
+  const newArray = [...facts];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
 export function FactCard({ fact }: { fact: Fact }) {
   const [visible, setVisible] = useState(false);
 
@@ -24,28 +33,30 @@ export function FactCard({ fact }: { fact: Fact }) {
 }
 
 export function FactLoader({ facts }: { facts: Fact[] }) {
-  const [showAmount, setShowAmount] = useState(1);
+  const [shuffledFacts, setShuffledFacts] = useState<Fact[]>([]);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (showAmount < facts.length) {
-      const timeout = setTimeout(
-        () => {
-          setShowAmount(c => c + 1);
-        },
-        Math.max((100 * (facts.length - showAmount)) / 100, 20)
-      );
+    setShuffledFacts(shuffleFacts(facts));
+  }, [facts]);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [facts.length, showAmount]);
+  if (!shuffledFacts.length) return null;
 
-  const visibleFacts = facts.slice(0, showAmount);
+  const fact = shuffledFacts[index];
 
   return (
-    <>
-      {visibleFacts.map(fact => (
-        <FactCard fact={fact} key={fact.slug} />
-      ))}
-    </>
+    <div className="grid grid-cols-3 gap-x-24">
+      <button
+        onClick={() =>
+          setIndex(c => (c - 1 + shuffledFacts.length) % shuffledFacts.length)
+        }
+      >
+        &lt;
+      </button>
+      <FactCard fact={fact} key={fact.slug} />
+      <button onClick={() => setIndex(c => (c + 1) % shuffledFacts.length)}>
+        &gt;
+      </button>
+    </div>
   );
 }

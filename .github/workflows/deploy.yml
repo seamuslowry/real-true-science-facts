@@ -31,7 +31,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations ######
           app_location: "." # App source code path relative to repository root - optional
-          output_location: ".next" # Built app content directory, relative to app_location - optional
+          output_location: "out" # Built app content directory, relative to app_location - optional
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

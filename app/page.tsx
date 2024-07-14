@@ -7,15 +7,6 @@ export interface Fact {
   slug: string;
 }
 
-function shuffleFacts(facts: Fact[]) {
-  const newArrray = [...facts];
-  for (let i = newArrray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArrray[i], newArrray[j]] = [newArrray[j], newArrray[i]];
-  }
-  return newArrray;
-}
-
 async function getFacts() {
   const csv = await readFile('./public/facts.csv', 'utf8');
 
@@ -24,7 +15,7 @@ async function getFacts() {
     skip_empty_lines: true
   }).toArray();
 
-  return shuffleFacts(facts);
+  return facts;
 }
 
 export default async function Home() {
