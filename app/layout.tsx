@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Real True Science Facts',
   description:
-    'True facts from science that are definetly real and should be believed without question or investigation'
+    'True facts from science that are definitely real and should be believed without question or investigation.'
 };
 
 export default function RootLayout({
