@@ -58,6 +58,43 @@ const ArrowButton = ({
   </button>
 );
 
+const FactSlider = ({
+  facts,
+  index
+}: {
+  facts: VirtualList<Fact>;
+  index: number;
+}) => {
+  const virtualPadding = useMemo(
+    () => Math.min(Math.floor(facts.length / 2) - 1, 10),
+    [facts]
+  );
+
+  const factsToRender = useMemo(
+    () => facts.slice(index - virtualPadding, index + virtualPadding),
+    [facts, index, virtualPadding]
+  );
+
+  return (
+    <div
+      className={`h-full w-full bg-slate-800 shadow-md shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
+    >
+      {factsToRender.map((fact, factIndex) => {
+        const left = factIndex < virtualPadding;
+        const right = virtualPadding < factIndex;
+        return (
+          <FactText
+            position={(left && 'LEFT') || (right && 'RIGHT') || undefined}
+            key={fact.slug}
+          >
+            {fact.content}
+          </FactText>
+        );
+      })}
+    </div>
+  );
+};
+
 type HiddenFactTextPosition = 'LEFT' | 'RIGHT';
 
 const FactText = ({
@@ -80,20 +117,10 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   );
   const [index, setIndex] = useState(0);
 
-  const virtualPadding = useMemo(
-    () => Math.floor(shuffledFacts.length / 2) - 1,
-    [shuffledFacts]
-  );
-
   useEffect(() => {
     const shuffledFacts = shuffleFacts(facts);
     setShuffledFacts(new VirtualList(...shuffledFacts));
   }, [facts]);
-
-  const virtualizedFacts = useMemo(
-    () => shuffledFacts.slice(index - virtualPadding, index + virtualPadding),
-    [shuffledFacts, index, virtualPadding]
-  );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -123,22 +150,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
       <ArrowButton onClick={() => setIndex(c => c - 1)}>
         <ArrowLeft />
       </ArrowButton>
-      <div
-        className={`h-full w-full bg-slate-800 shadow-md shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
-      >
-        {virtualizedFacts.map((fact, factIndex) => {
-          const left = factIndex < virtualPadding;
-          const right = virtualPadding < factIndex;
-          return (
-            <FactText
-              position={(left && 'LEFT') || (right && 'RIGHT') || undefined}
-              key={fact.slug}
-            >
-              {fact.content}
-            </FactText>
-          );
-        })}
-      </div>
+      <FactSlider facts={shuffledFacts} index={index} />
       <ArrowButton onClick={() => setIndex(c => c + 1)}>
         <ArrowRight />
       </ArrowButton>
