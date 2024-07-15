@@ -58,6 +58,22 @@ const ArrowButton = ({
   </button>
 );
 
+type HiddenFactTextPosition = 'LEFT' | 'RIGHT';
+
+const FactText = ({
+  children,
+  position
+}: {
+  children: string;
+  position?: HiddenFactTextPosition;
+}) => (
+  <p
+    className={`row-start-1 col-start-1 p-8 w-full text-2xl sm:text-5xl lg:text-7xl 2xl:text-8xl text-center transition-transform duration-500 ${position === 'RIGHT' ? 'translate-x-full' : ''} ${position === 'LEFT' ? '-translate-x-full' : ''}`}
+  >
+    {children}
+  </p>
+);
+
 export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const [shuffledFacts, setShuffledFacts] = useState<VirtualList<Fact>>(
     new VirtualList<Fact>(...[])
@@ -114,12 +130,12 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
           const left = factIndex < virtualPadding;
           const right = virtualPadding < factIndex;
           return (
-            <p
+            <FactText
+              position={(left && 'LEFT') || (right && 'RIGHT') || undefined}
               key={fact.slug}
-              className={`row-start-1 col-start-1 p-8 w-full text-2xl sm:text-5xl lg:text-7xl 2xl:text-8xl text-center transition-transform duration-500 ${right ? 'translate-x-full' : ''} ${left ? '-translate-x-full' : ''}`}
             >
               {fact.content}
-            </p>
+            </FactText>
           );
         })}
       </div>
