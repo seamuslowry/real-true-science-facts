@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
-import range from 'lodash.range';
+import VirtualList from './virtual-list';
 
 const shuffleFacts = (facts: Fact[]) => {
   const newArray = [...facts];
@@ -58,19 +58,10 @@ const ArrowButton = ({
   </button>
 );
 
-function virtualAccess(arr: Fact[], index: number) {
-  const length = arr.length;
-  // Adjust the index to fit within the bounds of the array length
-  index = ((index % length) + length) % length;
-  return arr[index];
-}
-
-const virtualSlice = (arr: Fact[], start: number, end: number) => {
-  return range(start, end).map(n => virtualAccess(arr, n));
-};
-
 export const FactLoader = ({ facts }: { facts: Fact[] }) => {
-  const [shuffledFacts, setShuffledFacts] = useState<Fact[]>([]);
+  const [shuffledFacts, setShuffledFacts] = useState<VirtualList<Fact>>(
+    new VirtualList<Fact>(...[])
+  );
   const [index, setIndex] = useState(0);
 
   const virtualPadding = useMemo(
@@ -80,16 +71,11 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
 
   useEffect(() => {
     const shuffledFacts = shuffleFacts(facts);
-    setShuffledFacts(shuffledFacts);
+    setShuffledFacts(new VirtualList(...shuffledFacts));
   }, [facts]);
 
   const virtualizedFacts = useMemo(
-    () =>
-      virtualSlice(
-        shuffledFacts,
-        index - virtualPadding,
-        index + virtualPadding
-      ),
+    () => shuffledFacts.slice(index - virtualPadding, index + virtualPadding),
     [shuffledFacts, index, virtualPadding]
   );
 
