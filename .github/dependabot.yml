@@ -9,9 +9,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-  development-dependencies:
-    dependency-type: "development"
-  production-patch-dependencies:
-    dependency-type: "production"
-    update-types:
-      - patch
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-patch-dependencies:
+        dependency-type: "production"
+        update-types:
+          - patch
