@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@types/lodash.range": "^3.2.9",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "csv-parse": "^5.5.6",
