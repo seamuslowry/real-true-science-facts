@@ -20,3 +20,7 @@ updates:
         dependency-type: "production"
         update-types:
           - patch
+      production-react-dependencies:
+        dependency-type: "production"
+        patterns:
+          - "react*"
