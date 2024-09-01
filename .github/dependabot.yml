@@ -14,7 +14,7 @@ updates:
       non-major-development-dependencies:
         dependency-type: "development"
         update-types:
-          - update
+          - minor
           - patch
       production-patch-dependencies:
         dependency-type: "production"
