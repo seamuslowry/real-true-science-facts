@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
 import VirtualList from './virtual-list';
+import { SwipeableHandlers, useSwipeable } from 'react-swipeable';
 
 const shuffleFacts = (facts: Fact[]) => {
   const newArray = [...facts];
@@ -60,10 +61,14 @@ const ArrowButton = ({
 
 const FactSlider = ({
   facts,
-  index
+  index,
+  onMoveLeft,
+  onMoveRight
 }: {
   facts: VirtualList<Fact>;
   index: number;
+  onMoveLeft: VoidFunction;
+  onMoveRight: VoidFunction;
 }) => {
   const virtualPadding = useMemo(
     () => Math.min(Math.floor(facts.length / 2) - 1, 10),
@@ -75,8 +80,17 @@ const FactSlider = ({
     [facts, index, virtualPadding]
   );
 
+  const handlers = useSwipeable({
+    // swipe moves should be opposite of the swipe direction
+    onSwipedLeft: onMoveRight,
+    onSwipedRight: onMoveLeft,
+    preventScrollOnSwipe: true,
+    trackMouse: true // Allows swiping with the mouse as well
+  });
+
   return (
     <div
+      {...handlers}
       className={`h-full w-full bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
     >
       {factsToRender.map((fact, factIndex) => {
@@ -122,14 +136,17 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     setShuffledFacts(new VirtualList(...shuffledFacts));
   }, [facts]);
 
+  const moveLeft = () => setIndex(c => c - 1);
+  const moveRight = () => setIndex(c => c + 1);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowLeft':
-          setIndex(c => c - 1);
+          moveLeft();
           break;
         case 'ArrowRight':
-          setIndex(c => c + 1);
+          moveRight();
           break;
         default:
           break;
@@ -147,11 +164,16 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
 
   return (
     <div className="grid grid-cols-slider gap-x-4 md:gap-x-12 h-full">
-      <ArrowButton onClick={() => setIndex(c => c - 1)}>
+      <ArrowButton onClick={() => moveLeft()}>
         <ArrowLeft />
       </ArrowButton>
-      <FactSlider facts={shuffledFacts} index={index} />
-      <ArrowButton onClick={() => setIndex(c => c + 1)}>
+      <FactSlider
+        onMoveLeft={moveLeft}
+        onMoveRight={moveRight}
+        facts={shuffledFacts}
+        index={index}
+      />
+      <ArrowButton onClick={() => moveRight()}>
         <ArrowRight />
       </ArrowButton>
     </div>
