@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
 import VirtualList from './virtual-list';
-import { SwipeableHandlers, useSwipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 
 const shuffleFacts = (facts: Fact[]) => {
   const newArray = [...facts];
@@ -136,8 +136,8 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     setShuffledFacts(new VirtualList(...shuffledFacts));
   }, [facts]);
 
-  const moveLeft = () => setIndex(c => c - 1);
-  const moveRight = () => setIndex(c => c + 1);
+  const moveLeft = useCallback(() => setIndex(c => c - 1), []);
+  const moveRight = useCallback(() => setIndex(c => c + 1), []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -158,13 +158,13 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [moveLeft, moveRight]);
 
   if (!shuffledFacts.length) return null;
 
   return (
     <div className="grid grid-cols-slider gap-x-4 md:gap-x-12 h-full">
-      <ArrowButton onClick={() => moveLeft()}>
+      <ArrowButton onClick={moveLeft}>
         <ArrowLeft />
       </ArrowButton>
       <FactSlider
@@ -173,7 +173,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
         facts={shuffledFacts}
         index={index}
       />
-      <ArrowButton onClick={() => moveRight()}>
+      <ArrowButton onClick={moveRight}>
         <ArrowRight />
       </ArrowButton>
     </div>
