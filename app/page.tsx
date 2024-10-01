@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises';
 import { parse } from 'csv-parse';
 import { FactLoader } from './fact';
+import { FactContextProvider } from './fact-context';
 
 export interface Fact {
   content: string;
@@ -24,7 +25,9 @@ export default async function Home() {
   return (
     <main className="h-screen w-screen grid place-items-center overflow-hidden">
       <div className="h-5/6 w-11/12 xl:w-3/4">
-        <FactLoader facts={facts} />
+        <FactContextProvider>
+          <FactLoader facts={facts} />
+        </FactContextProvider>
       </div>
     </main>
   );
