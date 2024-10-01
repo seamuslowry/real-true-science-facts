@@ -84,8 +84,7 @@ const FactSlider = ({
     // swipe moves should be opposite of the swipe direction
     onSwipedLeft: onMoveRight,
     onSwipedRight: onMoveLeft,
-    preventScrollOnSwipe: true,
-    trackMouse: true // Allows swiping with the mouse as well
+    preventScrollOnSwipe: true
   });
 
   return (
