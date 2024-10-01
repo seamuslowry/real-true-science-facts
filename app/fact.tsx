@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Fact } from './page';
 import React from 'react';
 import VirtualList from './virtual-list';
+import { useSwipeable } from 'react-swipeable';
+import { useFactContext } from './fact-context';
 
 const shuffleFacts = (facts: Fact[]) => {
   const newArray = [...facts];
@@ -58,13 +60,9 @@ const ArrowButton = ({
   </button>
 );
 
-const FactSlider = ({
-  facts,
-  index
-}: {
-  facts: VirtualList<Fact>;
-  index: number;
-}) => {
+const FactSlider = ({ facts }: { facts: VirtualList<Fact> }) => {
+  const { index, moveLeft, moveRight } = useFactContext();
+
   const virtualPadding = useMemo(
     () => Math.min(Math.floor(facts.length / 2) - 1, 10),
     [facts]
@@ -75,8 +73,16 @@ const FactSlider = ({
     [facts, index, virtualPadding]
   );
 
+  const handlers = useSwipeable({
+    // swipe moves should be opposite of the swipe direction
+    onSwipedLeft: moveRight,
+    onSwipedRight: moveLeft,
+    preventScrollOnSwipe: true
+  });
+
   return (
     <div
+      {...handlers}
       className={`h-full w-full bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
     >
       {factsToRender.map((fact, factIndex) => {
@@ -115,7 +121,8 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const [shuffledFacts, setShuffledFacts] = useState<VirtualList<Fact>>(
     new VirtualList<Fact>(...[])
   );
-  const [index, setIndex] = useState(0);
+
+  const { moveLeft, moveRight } = useFactContext();
 
   useEffect(() => {
     const shuffledFacts = shuffleFacts(facts);
@@ -126,10 +133,10 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowLeft':
-          setIndex(c => c - 1);
+          moveLeft();
           break;
         case 'ArrowRight':
-          setIndex(c => c + 1);
+          moveRight();
           break;
         default:
           break;
@@ -141,17 +148,17 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [moveLeft, moveRight]);
 
   if (!shuffledFacts.length) return null;
 
   return (
     <div className="grid grid-cols-slider gap-x-4 md:gap-x-12 h-full">
-      <ArrowButton onClick={() => setIndex(c => c - 1)}>
+      <ArrowButton onClick={moveLeft}>
         <ArrowLeft />
       </ArrowButton>
-      <FactSlider facts={shuffledFacts} index={index} />
-      <ArrowButton onClick={() => setIndex(c => c + 1)}>
+      <FactSlider facts={shuffledFacts} />
+      <ArrowButton onClick={moveRight}>
         <ArrowRight />
       </ArrowButton>
     </div>
