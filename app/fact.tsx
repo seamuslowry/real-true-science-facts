@@ -83,7 +83,7 @@ const FactSlider = ({ facts }: { facts: VirtualList<Fact> }) => {
   return (
     <div
       {...handlers}
-      className={`h-full w-full bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-500 rounded overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
+      className={`h-full w-full bg-white dark:bg-slate-800 shadow-md dark:shadow-slate-500 rounded-sm overflow-hidden grid grid-cols-1 grid-rows-1 place-items-center`}
     >
       {factsToRender.map((fact, factIndex) => {
         const left = factIndex < virtualPadding;
