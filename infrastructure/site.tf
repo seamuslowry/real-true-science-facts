@@ -19,7 +19,7 @@ resource "cloudflare_record" "txt_verification" {
   zone_id = local.cloudflare_zone_id
   name    = "_dnsauth"
   type    = "TXT"
-  value   = azurerm_static_web_app_custom_domain.realtruesciencefactscustomdomain.validation_token
+  content = azurerm_static_web_app_custom_domain.realtruesciencefactscustomdomain.validation_token
   ttl     = 3600
 }
 
@@ -27,7 +27,7 @@ resource "cloudflare_record" "cname_record" {
   zone_id = local.cloudflare_zone_id
   name    = "@"
   type    = "CNAME"
-  value   = azurerm_static_web_app.realtruesciencefacts.default_host_name
+  content = azurerm_static_web_app.realtruesciencefacts.default_host_name
   ttl     = 1
   proxied = true
 }
