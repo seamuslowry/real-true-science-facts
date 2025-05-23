@@ -11,11 +11,6 @@ updates:
       interval: "weekly"
     versioning-strategy: "increase"
     groups:
-      react-dependencies:
-        patterns:
-          - "react*"
-          - "@types/react*"
-          - "next"
       non-major-development-dependencies:
         dependency-type: "development"
         update-types:
