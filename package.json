@@ -18,7 +18,7 @@
     "react-swipeable": "^7.0.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.6",
+    "@tailwindcss/postcss": "^4.1.7",
     "@types/lodash.range": "^3.2.9",
     "@types/node": "^22",
     "@types/react": "^19",
