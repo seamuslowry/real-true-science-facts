@@ -124,10 +124,10 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
 
   const { moveLeft, moveRight } = useFactContext();
 
-  useEffect(() => {
-    const shuffledFacts = shuffleFacts(facts);
-    setShuffledFacts(new VirtualList(...shuffledFacts));
-  }, [facts]);
+  const shuffledFacts = useMemo(
+    () => new VirtualList(shuffleFacts(facts)),
+    [facts]
+  );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
