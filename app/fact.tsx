@@ -118,10 +118,6 @@ const FactText = ({
 );
 
 export const FactLoader = ({ facts }: { facts: Fact[] }) => {
-  const [shuffledFacts, setShuffledFacts] = useState<VirtualList<Fact>>(
-    new VirtualList<Fact>(...[])
-  );
-
   const { moveLeft, moveRight } = useFactContext();
 
   const shuffledFacts = useMemo(
