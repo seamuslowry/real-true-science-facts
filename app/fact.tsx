@@ -118,12 +118,17 @@ const FactText = ({
 );
 
 export const FactLoader = ({ facts }: { facts: Fact[] }) => {
+  const [shuffledFacts, setShuffledFacts] = useState<VirtualList<Fact>>(
+    new VirtualList<Fact>(...[])
+  );
+
   const { moveLeft, moveRight } = useFactContext();
 
-  const shuffledFacts = useMemo(
-    () => new VirtualList(...shuffleFacts(facts)),
-    [facts]
-  );
+  useEffect(() => {
+    // We intentionally re-order on the client AFTER hydration
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setShuffledFacts(new VirtualList(...shuffleFacts(facts)));
+  }, [facts]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
