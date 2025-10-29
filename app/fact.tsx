@@ -125,8 +125,9 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const { moveLeft, moveRight } = useFactContext();
 
   useEffect(() => {
-    const shuffledFacts = shuffleFacts(facts);
-    setShuffledFacts(new VirtualList(...shuffledFacts));
+    // We intentionally re-order on the client AFTER hydration
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setShuffledFacts(new VirtualList(...shuffleFacts(facts)));
   }, [facts]);
 
   useEffect(() => {
