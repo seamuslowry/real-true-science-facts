@@ -121,7 +121,7 @@ export const FactLoader = ({ facts }: { facts: Fact[] }) => {
   const { moveLeft, moveRight } = useFactContext();
 
   const shuffledFacts = useMemo(
-    () => new VirtualList(shuffleFacts(facts)),
+    () => new VirtualList(...shuffleFacts(facts)),
     [facts]
   );
 
