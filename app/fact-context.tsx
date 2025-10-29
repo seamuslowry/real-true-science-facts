@@ -1,5 +1,6 @@
 'use client';
 import {
+  type ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -13,11 +14,7 @@ const FactContext = createContext({
   moveRight: () => {}
 });
 
-export const FactContextProvider = ({
-  children
-}: {
-  children: React.ReactNode;
-}) => {
+export const FactContextProvider = ({ children }: { children: ReactNode }) => {
   const [index, setIndex] = useState(0);
 
   const moveLeft = useCallback(() => setIndex(c => c - 1), []);
