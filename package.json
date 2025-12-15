@@ -20,7 +20,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@types/lodash.range": "^3.2.9",
-    "@types/node": "^24",
+    "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "csv-parse": "^6.1.0",
