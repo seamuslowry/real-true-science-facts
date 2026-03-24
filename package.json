@@ -18,12 +18,12 @@
     "react-swipeable": "^7.0.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.2.1",
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/lodash.range": "^3.2.9",
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "csv-parse": "^6.1.0",
+    "csv-parse": "^6.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "eslint-config-prettier": "^10.1.8",
