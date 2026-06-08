@@ -2,8 +2,8 @@
 import {
   type ReactNode,
   createContext,
+  use,
   useCallback,
-  useContext,
   useMemo,
   useState
 } from 'react';
@@ -29,9 +29,9 @@ export const FactContextProvider = ({ children }: { children: ReactNode }) => {
     [index, moveLeft, moveRight]
   );
 
-  return <FactContext.Provider value={value}>{children}</FactContext.Provider>;
+  return <FactContext value={value}>{children}</FactContext>;
 };
 
 export const useFactContext = () => {
-  return useContext(FactContext);
+  return use(FactContext);
 };

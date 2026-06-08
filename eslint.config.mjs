@@ -1,30 +1,42 @@
 // eslint.config.mjs
-import { defineConfig } from 'eslint/config';
-import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
-import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import eslintReact from '@eslint-react/eslint-plugin';
+import reactHooks from 'eslint-plugin-react-hooks';
+import nextPlugin from '@next/eslint-plugin-next';
+import tseslint from 'typescript-eslint';
 import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
-// If you're using TypeScript, also:
-// import nextTs from 'eslint-config-next/typescript';
-
+// Hand-rolled flat config, replacing eslint-config-next.
+// Background: eslint-config-next@16.x transitively depends on eslint-plugin-react@7.x,
+// which crashes on ESLint 10 (vercel/next.js#89764). We pull Next's lint signal
+// directly from @next/eslint-plugin-next instead, and use @eslint-react as the
+// ESLint 10-ready React rule set.
 export default defineConfig([
-  // Next's flat presets come as arrays — spread them at the top level
-  ...nextCoreWebVitals,
-  // ...nextTs, // uncomment if using TS rules from Next
+  // TypeScript recommended rules (parser + base + recommended)
+  ...tseslint.configs.recommended,
 
-  // ESLint's official JS flat preset
-  js.configs.recommended,
+  // Next.js core-web-vitals rules — registers the @next/next plugin and its rules
+  nextPlugin.configs['core-web-vitals'],
 
-  // Your project rules / plugins
+  // React + react-hooks + Prettier — applied to every JS/TS source file
   {
-    plugins: { prettier },
+    files: ['**/*.{js,jsx,mjs,ts,tsx}'],
+    extends: [
+      eslintReact.configs.recommended,
+      reactHooks.configs.flat.recommended
+    ],
+    plugins: {
+      prettier
+    },
     rules: {
       'prettier/prettier': 'error'
     }
   },
 
-  // Optional ignores (flat config style)
-  {
-    ignores: ['.next/**', 'out/**', 'build/**']
-  }
+  // Disable stylistic ESLint rules that conflict with Prettier — must come last
+  prettierConfig,
+
+  // Keep the same global ignores as before (.next/**, out/**, build/**)
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
 ]);
