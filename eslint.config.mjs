@@ -22,13 +22,14 @@ export default defineConfig([
   // React + react-hooks + Prettier — applied to every JS/TS source file
   {
     files: ['**/*.{js,jsx,mjs,ts,tsx}'],
-    extends: [eslintReact.configs.recommended],
+    extends: [
+      eslintReact.configs.recommended,
+      reactHooks.configs.flat.recommended
+    ],
     plugins: {
-      'react-hooks': reactHooks,
       prettier
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
       'prettier/prettier': 'error'
     }
   },

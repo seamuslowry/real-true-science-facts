@@ -1,7 +1,7 @@
 ---
 title: 'fix: Resolve ESLint 10 peer-dep failure by replacing eslint-config-next with hand-rolled flat config'
 type: fix
-status: active
+status: completed
 date: 2026-06-07
 ---
 
