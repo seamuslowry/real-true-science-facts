@@ -18,9 +18,9 @@
     "react-swipeable": "^7.0.2"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^5.8.16",
-    "@next/eslint-plugin-next": "^16.2.7",
-    "@tailwindcss/postcss": "^4.3.0",
+    "@eslint-react/eslint-plugin": "^5.9.1",
+    "@next/eslint-plugin-next": "^16.2.9",
+    "@tailwindcss/postcss": "^4.3.1",
     "@types/lodash.range": "^3.2.9",
     "@types/node": "^25",
     "@types/react": "^19",
@@ -31,10 +31,10 @@
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react-hooks": "^7.1.1",
     "postcss": "^8",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "tailwindcss": "^4.0.0",
     "typescript": "^6",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.1"
   },
   "engines": {
     "node": ">=18.17.0"
